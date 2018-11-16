@@ -8,4 +8,3 @@
 - Me: "Okay, I guess I'll just make a JavaScript parser in Java then"
 - Me: "This is really hard"
 - Joshua: "You are like a little baby."
-- Me: "Okay."

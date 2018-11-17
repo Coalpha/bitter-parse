@@ -8,3 +8,10 @@
 - Me: "Okay, I guess I'll just make a JavaScript parser in Java then"
 - Me: "This is really hard"
 - Joshua: "You are like a little baby."
+
+### Usage
+Requires `wtf_ja` in `$PATH` as well as `javac`, `java`, and `native-image`.
+Basically, just install graalvm
+Run FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java -r`
+Compile FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java --native:bin/FracCalc`
+Compile and then run FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java -n -r`

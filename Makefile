@@ -1,9 +1,8 @@
 start: clean build
 
-build: ./src/FracCalc.java
-	cd src && walk FracCalc.java
+build: 
 
 clean:
-	./clear_class.sh yes
+	wtf_ja -d src --clean:yes
 
 .PHONY: start, build, clean

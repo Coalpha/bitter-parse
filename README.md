@@ -10,8 +10,8 @@
 - Joshua: "You are like a little baby."
 
 ### Usage
-Requires `wtf_ja` in `$PATH` as well as `javac`, `java`, and `native-image`.
-Basically, just install graalvm
-Run FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java -r`
-Compile FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java --native:bin/FracCalc`
-Compile and then run FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java -n -r`
+- Requires [`wtf_ja`](https://github.com/Coalpha/dotfiles/blob/master/bin/wtf_ja) and it's dependencies
+- Basically, just install graalvm
+- Run FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java -r`
+- Compile FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java --native:bin/FracCalc`
+- Compile and then run FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java -n -r`

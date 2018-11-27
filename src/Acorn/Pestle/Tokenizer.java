@@ -7,44 +7,39 @@ public class Tokenizer {
   String inp;
   Boolean spaceBefore = false;
   TokenList tokens = new TokenList();
-  public Tokenizer(String inp) throws UnexpectedCharacter {
+  public Tokenizer(String inp) {
     int l = inp.length();
     this.append('s', TokenTypes.sof);
     for (int i = 0; i < l; i++) {
       char c = inp.charAt(i);
       if (isNumber(c)) {
         if (this.spaceBefore) {
-          this.append(c, TokenTypes.num);
+          append(c, TokenTypes.num);
         } else {
           this.condTypeAppend(c, TokenTypes.num);
         }
       } else if (c == '+' || c == '-') {
-        this.append(c, TokenTypes.plusMin);
-        // yes, I know this is repetitive
+        append(c, TokenTypes.plusMin);
       } else if (c == '*') {
-        this.append(c, TokenTypes.star);
+        append(c, TokenTypes.star);
       } else if (c == '/') {
-        this.append(c, TokenTypes.slash);
+        append(c, TokenTypes.slash);
       } else if (c == '(') {
-        this.append(c, TokenTypes.parenL);
+        append(c, TokenTypes.parenL);
       } else if (c == ')') {
-        this.append(c, TokenTypes.parenR);
-      } else if (c == '^') {
-        this.append(c, TokenTypes.carrot);
+        append(c, TokenTypes.parenR);
       } else if (c == '_') {
-        this.append(c, TokenTypes.underscore);
+        append(c, TokenTypes.underscore);
       } else if (c == ' ') {
         this.spaceBefore = true;
         continue;
+        // continue otherwise this.spaceBefore is set to false
       } else {
         throw new UnexpectedCharacter(c);
       }
       this.spaceBefore = false;
-      // tfw switch only works on enums in Java
-      // For what it's worth, it probably makes switch more performant
-      // but since Java's a snail, it doesn't really make sense.
     }
-    this.append('e', TokenTypes.eof);
+    append('e', TokenTypes.eof);
   }
   Token getLastToken() {
     return this.tokens.get(this.tokens.size() - 1);
@@ -57,10 +52,10 @@ public class Tokenizer {
     // token on the TokenList, then merge cToken and lToken
     // otherwise, just append it to the TokenList
     Token lToken = this.getLastToken();
-    if (lToken.label().equals(t.label)) {
+    if (lToken.type == t) {
       lToken.append(c);
     } else {
-      this.append(c, t);
+      append(c, t);
     }
   }
   public TokenList getTokens() {

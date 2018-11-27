@@ -10,6 +10,9 @@ public class Token {
   void append(char value) {
     this.value += Character.toString(value);
   }
+  public int prec() {
+    return this.type.prec;
+  }
   @Override
   public String toString() {
     return this.value + ": " + this.type.toString();

@@ -5,7 +5,6 @@ public class Tokenizer {
     return Character.toString(c).matches("\\d");
   }
   String inp;
-  Boolean spaceBefore = false;
   TokenList tokens = new TokenList();
   public Tokenizer(String inp) {
     int l = inp.length();
@@ -13,7 +12,7 @@ public class Tokenizer {
     for (int i = 0; i < l; i++) {
       char c = inp.charAt(i);
       if (isNumber(c)) {
-        if (this.spaceBefore) {
+        if (getLastToken().type == TokenTypes.space) {
           append(c, TokenTypes.num);
         } else {
           this.condTypeAppend(c, TokenTypes.num);
@@ -31,13 +30,10 @@ public class Tokenizer {
       } else if (c == '_') {
         append(c, TokenTypes.underscore);
       } else if (c == ' ') {
-        this.spaceBefore = true;
-        continue;
-        // continue otherwise this.spaceBefore is set to false
+        append(c, TokenTypes.space);
       } else {
         throw new UnexpectedCharacter(c);
       }
-      this.spaceBefore = false;
     }
     append('e', TokenTypes.eof);
   }

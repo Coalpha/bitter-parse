@@ -5,9 +5,7 @@
 - Class: "...You didn't really learn anything."
 - Me: "That's the point"
 - Class: "Do it without using Nashorn"
-- Me: "Okay, I guess I'll just make a JavaScript parser in Java then"
-- Me: "This is really hard"
-- Joshua: "You are like a little baby."
+- Me: *poorly re-writes a JavaScript parser in Java*
 
 ### Usage
 

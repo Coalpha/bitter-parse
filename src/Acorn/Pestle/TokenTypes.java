@@ -1,18 +1,21 @@
 package Acorn.Pestle;
 
 public class TokenTypes {
-  static TokenType sof = new TokenType("sof");
-  static TokenType eof = new TokenType("eof");
-  static TokenType num = new TokenType("num", 7);
-
-  static TokenType parenL = new TokenType("prL", 6);
-  static TokenType parenR = new TokenType("prR");
+  public static TokenType sof = new TokenType("sof");
+  public static TokenType eof = new TokenType("eof");
+  public static TokenType space = new TokenType("wsp");
   
-  static TokenType plusMin = new TokenType("+/-", 2);
-  static TokenType star = new TokenType("str", 3);
-  static TokenType slash = new TokenType("sls", 4);
-  static TokenType underscore = new TokenType("uds", 5);
+  public static TokenType parenL = new TokenType("prL", 6);
+  public static TokenType parenR = new TokenType("prR");
+  
+  public static TokenType num = new TokenType("num", 7);
+  
+  public static TokenType plusMin = new TokenType("+/-", 2, true);
+  public static TokenType star = new TokenType("str", 3, true);
+  public static TokenType slash = new TokenType("sls", 4, true);
+  public static TokenType underscore = new TokenType("uds", 5, true);
   // This is literally just a plus with higher precedence.
   // It has to be less than a slash otherwise it adds the whole number to the numerator of the fraction,
   // not the whole fraction
+  public static TokenType NA = new TokenType("dflt");
 }

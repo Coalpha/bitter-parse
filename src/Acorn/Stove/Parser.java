@@ -1,77 +1,101 @@
 package Acorn.Stove;
-import Acorn.Pestle.*;
-import Acorn.WTFerror;
 
+import Acorn.WTFerror;
+import Acorn.Pestle.*;
+
+import java.rmi.UnexpectedException;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class Parser {
-  TokenList tokens;
-  int[] subListLimits = new int[2];
+  int length;
+  final TokenList tokens;
+  public Expression AST;
   public Parser(TokenList tokens) {
+    tokens.shiftSOF();
+    tokens.stripWhiteSpace();
     this.tokens = tokens;
-    this.subListLimits[0] = 1; // Skip start of file
-    this.subListLimits[1] = getSize();
+    this.AST = parse2Expression(tokens);
   }
-  private int getSize() {
-    return this.tokens.size();
-  }
-  private int getLimitRight() {
-    return this.subListLimits[1];
-  }
-  private int getLimitLeft() {
-    return this.subListLimits[0];
-  }
-  private Token getToken() {
-    return this.tokens.get(getLimitLeft());
-  }
-  private Token nextToken() {
-    this.subListLimits[0]++;
-    return this.tokens.get(getLimitLeft() - 1);
-  }
-  public Expression ParseExpression() {
-    int l = getLimitRight();
-    int curPrec = 99;
-    int curIdx = 0;
-    int parens = 0;
-    for (int i = getLimitLeft(); i < l; i++) {
-      Token cT = this.tokens.get(i);
-      if (cT.type.binop > 0 && cT.type.binop <= curPrec && parens == 0) {
-        curIdx = i;
-        curPrec = cT.type.binop;
-      } else if (cT.label().equals("prL")) {
-        parens++;
-      } else if (cT.label().equals("prR")) {
-        parens--;
-      }
+  Expression parse2Expression(TokenList tokens) {
+    // System.out.println("<Acorn.Stove.Parser.parse2Expression>");
+    // System.out.println(tokens);
+    if (tokens.size() == 0) {
+      throw new WTFerror("Cannot parse TokenList of size 0!");
     }
-    if (curPrec < 99) {
-      this.subListLimits = new int[]{getLimitLeft(), curIdx};
-      Expression left = ParseExpression();
-      String bnop = this.tokens.get(curIdx).value;
-      String binop = bnop.equals("_") ? "+" : bnop;
-      this.subListLimits = new int[]{curIdx + 1, l};
-      Expression right = ParseExpression();
-      return new BinopExpression(left, binop, right);
+    TokenAndPosition leastPrec = tokens.getLeastPrec();
+    // System.out.println("leastPrec:");
+    // System.out.println(leastPrec);
+    // System.out.println("</Acorn.Stove.Parser.parse2Expression>");
+    if (leastPrec.token.type == TokenTypes.num) {
+      return new Literal(leastPrec.token.value);
     }
-    Token cT = nextToken();
-    if (cT.label().equals("prL")) {
-      return ParseParens();
+    BinopCollection collection = tokens.binopSplit(leastPrec.index);
+    if (leastPrec.token.type.binop) {
+      return parseBinop(collection.left, collection.binop, collection.right);
     }
-    if (cT.label().equals("num")) {
-      return new Literal(cT.value);
+    if (leastPrec.token.type == TokenTypes.underscore) {
+      return parseMixedNumber(collection.left, collection.binop, collection.right);
     }
-    throw new WTFerror();
+    if (tokens.get(0).type == TokenTypes.parenL) {
+      int matchingParen = tokens.findMatchingParen(0);
+      return parse2Expression(tokens.slice(1, matchingParen));
+    }
+    return new Literal("Parser cant deal with it yet");
   }
-  public Expression ParseParens() {
-    for (int i = getLimitLeft(); i < getLimitRight(); i++) {
-      Token cT = this.tokens.get(i);
-      if (cT.label().equals("prL")) {
-        this.subListLimits = new int[]{i + 1, getLimitRight()};
-        return ParseParens();
-      } else if (cT.label().equals("prR")) {
-        this.subListLimits = new int[]{getLimitLeft(), i};
-        return new ParenExpression(ParseExpression());
-      }
+  BinopExpression parseUnary(Token op, TokenList right) {
+    // System.out.println("<Acorn.Stove.Parser.parseUnary>");
+    // System.out.println("op:\n" + op);
+    // System.out.print("right:\n" + right);
+    // System.out.println("</Acorn.Stove.Parser.parseUnary>");
+    return new BinopExpression(
+      new Literal("0"),
+      op.value,
+      parse2Expression(right)
+    );
+  }
+  BinopExpression parseBinop(TokenList left, Token center, TokenList right) {
+    // System.out.println("<Acorn.Stove.Parser.parseBinop>");
+    // System.out.print("left:\n" + left);
+    // System.out.println("center:\n" + center);
+    // System.out.print("right:\n" + right);
+    // System.out.println("</Acorn.Stove.Parser.parseBinop>");
+    if (
+      (
+        left.size() == 1
+        && left.get(0).type == TokenTypes.sof
+      )
+      || left.size() == 0
+    ) {
+      return parseUnary(center, right);
     }
-    throw new UnexpectedToken(getToken().value, "a paren somewhere");
+    return new BinopExpression(
+      parse2Expression(left),
+      center.value,
+      parse2Expression(right)
+    );
+  }
+  BinopExpression parseMixedNumber(TokenList left, Token center, TokenList right) {
+    // System.out.println("<Acorn.Stove.Parser.parseMixedNumber>");
+    // System.out.print("left:\n" + left);
+    // System.out.println("center:\n" + center);
+    // System.out.print("right:\n" + right);
+    // System.out.println("</Acorn.Stove.Parser.parseMixedNumber>");
+    BinopExpression exRight = (BinopExpression) parse2Expression(right);
+    if (!exRight.binop.equals("/")) {
+      throw new UnexpectedToken(exRight.binop, "/");
+    }
+    return new BinopExpression(
+      parse2Expression(left),
+      "+",
+      exRight
+    );
+  }
+  @Override
+  public String toString() {
+    // System.out.println("<Acorn.Stove.Parser.toString>");
+    // System.out.print(this.tokens);
+    // System.out.println("</Acorn.Stove.Parser.toString>");
+    return this.AST.toString();
   }
 }

@@ -9,6 +9,9 @@ class Console {
     while (true) {
       System.out.print(Colors.cyan + "$ " + Colors.reset);
       String inp = s.nextLine();
+      if (inp.length() == 0) {
+        System.out.println("You can't just type nothing...");
+      }
       if (inp.matches("[qQeE]|quit|exit")) {
         System.out.println("Shutdown gracefully");
         System.exit(0);

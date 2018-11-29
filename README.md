@@ -5,11 +5,10 @@
 - Class: "...You didn't really learn anything."
 - Me: "That's the point"
 - Class: "Do it without using Nashorn"
-- Me: "Okay, I guess I'll just make a JavaScript parser in Java then"
-- Me: "This is really hard"
-- Joshua: "You are like a little baby."
+- Me: *poorly re-writes a JavaScript parser in Java*
 
 ### Usage
+
 - Requires [`wtf_ja`](https://github.com/Coalpha/dotfiles/blob/master/bin/wtf_ja) and it's dependencies
 - Basically, just install graalvm
 - Run FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java -r`

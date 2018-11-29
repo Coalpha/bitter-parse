@@ -15,12 +15,15 @@ public class Squirrel {
     throw new WTFerror();
   }
   public static Fraction feed(ParenExpression p) {
+    // System.out.println(p);
     return Squirrel.feed(p.expr);
   };
   public static Fraction feed(Literal l) {
+    // System.out.println(l);
     return Fraction.fromInteger(Integer.parseInt(l.val));
   };
   public static Fraction feed(BinopExpression expr) {
+    // System.out.println(expr);
     Fraction left = Squirrel.feed(expr.left);
     Fraction right = Squirrel.feed(expr.right);
     if (expr.binop.equals("/")) {

@@ -1,5 +1,6 @@
 package Acorn.Stove;
 
+import Acorn.WTFerror;
 import Acorn.Pestle.*;
 
 import java.rmi.UnexpectedException;
@@ -36,12 +37,13 @@ public class Parser {
     return new Literal("Parser cant deal with it yet");
   }
   Expression parenLeft(TokenList tokens) {
-    // System.out.println("<Acorn.Stove.Parser.parenLeft>");
-    // System.out.print(tokens);
-    // System.out.println("</Acorn.Stove.Parser.parenLeft>");
+    System.out.println("<Acorn.Stove.Parser.parenLeft>");
+    System.out.print(tokens);
+    System.out.println("</Acorn.Stove.Parser.parenLeft>");
     int l = tokens.size();
     int scopeLevel = 0;
     int endParen = -1;
+    // this loop is a mess
     for (int i = 0; i < l; i++) {
       Token current = tokens.get(i);
       if (current.type == TokenTypes.parenL) {
@@ -61,6 +63,9 @@ public class Parser {
       } else if (current.type == TokenTypes.eof && endParen == -1) {
         throw new UnexpectedToken("end of file");
       }
+    }
+    if (endParen == -1) {
+      throw new WTFerror();
     }
     return parse2Expression(tokens.slice(0, endParen));
   }

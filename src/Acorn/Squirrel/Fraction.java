@@ -1,5 +1,4 @@
 package Acorn.Squirrel;
-
 public class Fraction {
   public static long gcm(int a, int b) {
     // https://stackoverflow.com/questions/6618994/simplifying-fractions-in-java
@@ -11,8 +10,16 @@ public class Fraction {
   int numerator;
   int denominator;
   Fraction(int nu, int de) {
-    this.numerator = nu;
-    this.denominator = de;
+    if (de == 0) {
+      throw new DivideByZeroError();
+    }
+    if (de < 0) {
+      this.numerator = nu * -1;
+      this.denominator = de * -1; 
+    } else {
+      this.numerator = nu;
+      this.denominator = de;
+    }
   }
   Fraction add(int i) {
     int nu = (i * this.denominator) + this.numerator;

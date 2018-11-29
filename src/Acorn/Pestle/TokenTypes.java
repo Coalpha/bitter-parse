@@ -5,7 +5,7 @@ public class TokenTypes {
   public static TokenType eof = new TokenType("eof");
   public static TokenType space = new TokenType("wsp");
   
-  public static TokenType parenL = new TokenType("prL", 6);
+  public static TokenType parenL = new TokenType("prL", 1);
   public static TokenType parenR = new TokenType("prR");
   
   public static TokenType num = new TokenType("num", 7);

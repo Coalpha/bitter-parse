@@ -71,7 +71,15 @@ public class TokenList extends ArrayList<Token> {
         continue;
       }
       int currentPrec = currentToken.prec();
-      if (currentPrec > 0 && currentPrec < t.prec()) {
+      if (
+        currentPrec > 0
+        && currentPrec < t.prec()
+        && !(
+          t.type.binop
+          && currentToken.type == TokenTypes.plusMin
+        )
+        // so that something like + - actually parses
+      ) {
         t = currentToken;
         idx = i;
       }

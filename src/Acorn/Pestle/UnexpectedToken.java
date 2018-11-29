@@ -1,4 +1,4 @@
-package Acorn.Stove;
+package Acorn.Pestle;
 import java.lang.RuntimeException;
 
 public class UnexpectedToken extends RuntimeException {

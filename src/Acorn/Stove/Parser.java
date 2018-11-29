@@ -23,7 +23,7 @@ public class Parser {
     if (tokens.size() == 0) {
       throw new WTFerror("Cannot parse TokenList of size 0!");
     }
-    TokenAndPosition leastPrec = tokens.getLeastPrec();
+    TokenAndPosition leastPrec = getLeastPrec(tokens);
     // System.out.println("leastPrec:");
     // System.out.println(leastPrec);
     // System.out.println("</Acorn.Stove.Parser.parse2Expression>");
@@ -90,6 +90,52 @@ public class Parser {
       "+",
       exRight
     );
+  }
+  public TokenAndPosition getLeastPrec(TokenList tokens) {
+    tokens.verifyParens();
+    Token t = new Token(
+      "leastPrecStartingToken",
+      new TokenType("lpst", 99)
+    );
+    int idx = 0;
+    int l = tokens.size();
+    int parenScope = 0;
+    boolean mixedNumberStart = false;
+    for (int i = 0; i < l; i++) {
+      Token currentToken = tokens.get(i);
+      if (currentToken.type == TokenTypes.parenL) {
+        parenScope++;
+        continue;
+      } else if (currentToken.type == TokenTypes.parenR) {
+        parenScope--;
+      }
+      if (parenScope > 0) {
+        continue;
+      }
+      int currentPrec = currentToken.prec();
+      if (
+        currentPrec > 0
+        && currentPrec < t.prec()
+        && !(
+          t.type.binop
+          && currentToken.type == TokenTypes.plusMin
+        )
+        // so that something like + - actually parses
+      ) {
+        if (currentToken.type == TokenTypes.underscore) {
+          mixedNumberStart = true;
+        } else if (
+          mixedNumberStart
+          && currentToken.type == TokenTypes.slash
+        ) {
+          mixedNumberStart = false;
+          continue;
+        }
+        t = currentToken;
+        idx = i;
+      }
+    }
+    return new TokenAndPosition(t, idx);
   }
   @Override
   public String toString() {

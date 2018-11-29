@@ -4,7 +4,7 @@ import VT100.Colors;
 public class TokenAndPosition {
   public Token token;
   public int index;
-  TokenAndPosition(Token t, int i) {
+  public TokenAndPosition(Token t, int i) {
     this.token = t;
     this.index = i;
   }

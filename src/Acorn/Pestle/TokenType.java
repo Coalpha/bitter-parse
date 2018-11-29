@@ -10,7 +10,7 @@ public class TokenType {
     this.prec = prec;
     this.binop = true;
   }
-  TokenType(String name, int prec) {
+  public TokenType(String name, int prec) {
     this.name = name;
     this.prec = prec;
   }

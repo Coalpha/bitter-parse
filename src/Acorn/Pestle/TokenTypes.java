@@ -12,8 +12,8 @@ public class TokenTypes {
   
   public static TokenType plusMin = new TokenType("+/-", 2, true);
   public static TokenType star = new TokenType("str", 3, true);
-  public static TokenType slash = new TokenType("sls", 5, true);
-  public static TokenType underscore = new TokenType("uds", 4);
+  public static TokenType slash = new TokenType("sls", 4, true);
+  public static TokenType underscore = new TokenType("uds", 5);
   // This is literally just a plus with higher precedence.
   // It has to be less than a slash otherwise it adds the whole number to the numerator of the fraction,
   // not the whole fraction

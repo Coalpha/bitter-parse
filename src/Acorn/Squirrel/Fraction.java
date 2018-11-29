@@ -44,6 +44,9 @@ public class Fraction {
     return new Fraction(this.numerator / gcm, this.denominator / gcm);
   }
   public String toMixedNumber() {
+    if (this.denominator == 1) {
+      return Integer.toString(this.numerator);
+    }
     if (this.numerator > this.denominator) {
       String res = Integer.toString(
         (int) Math.floor(this.numerator / this.denominator)

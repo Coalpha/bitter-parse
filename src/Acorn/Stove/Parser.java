@@ -12,20 +12,23 @@ public class Parser {
   final TokenList tokens;
   public Expression AST;
   public Parser(TokenList tokens) {
+    tokens.shiftSOF();
     tokens.stripWhiteSpace();
     this.tokens = tokens;
     this.AST = parse2Expression(tokens);
   }
   Expression parse2Expression(TokenList tokens) {
-    TokenAndPosition leastPrec = tokens.getLeastPrec();
     // System.out.println("<Acorn.Stove.Parser.parse2Expression>");
+    // System.out.println(tokens);
+    if (tokens.size() == 0) {
+      throw new WTFerror("Cannot parse TokenList of size 0!");
+    }
+    TokenAndPosition leastPrec = tokens.getLeastPrec();
+    // System.out.println("leastPrec:");
     // System.out.println(leastPrec);
     // System.out.println("</Acorn.Stove.Parser.parse2Expression>");
     if (leastPrec.token.type == TokenTypes.num) {
       return new Literal(leastPrec.token.value);
-    }
-    if (leastPrec.token.type == TokenTypes.parenL) {
-      return parenLeft(tokens.slice(leastPrec.index + 1));
     }
     BinopCollection collection = tokens.binopSplit(leastPrec.index);
     if (leastPrec.token.type.binop) {
@@ -34,40 +37,11 @@ public class Parser {
     if (leastPrec.token.type == TokenTypes.underscore) {
       return parseMixedNumber(collection.left, collection.binop, collection.right);
     }
+    if (tokens.get(0).type == TokenTypes.parenL) {
+      int matchingParen = tokens.findMatchingParen(0);
+      return parse2Expression(tokens.slice(1, matchingParen));
+    }
     return new Literal("Parser cant deal with it yet");
-  }
-  Expression parenLeft(TokenList tokens) {
-    System.out.println("<Acorn.Stove.Parser.parenLeft>");
-    System.out.print(tokens);
-    System.out.println("</Acorn.Stove.Parser.parenLeft>");
-    int l = tokens.size();
-    int scopeLevel = 0;
-    int endParen = -1;
-    // this loop is a mess
-    for (int i = 0; i < l; i++) {
-      Token current = tokens.get(i);
-      if (current.type == TokenTypes.parenL) {
-        scopeLevel++;
-      } else if (current.type == TokenTypes.parenR) {
-        if (endParen == -1) {
-          // if we haven't found an endParen on the same scope
-          if (scopeLevel == 0) {
-            endParen = i;
-          } else {
-            scopeLevel--;
-          }
-        } else {
-          // wait there's an extra one?
-          throw new UnexpectedToken("extra )");
-        }
-      } else if (current.type == TokenTypes.eof && endParen == -1) {
-        throw new UnexpectedToken("end of file");
-      }
-    }
-    if (endParen == -1) {
-      throw new WTFerror();
-    }
-    return parse2Expression(tokens.slice(0, endParen));
   }
   BinopExpression parseUnary(Token op, TokenList right) {
     // System.out.println("<Acorn.Stove.Parser.parseUnary>");

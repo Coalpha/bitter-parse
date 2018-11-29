@@ -11,30 +11,34 @@ public class Parser {
   final TokenList tokens;
   public Expression AST;
   public Parser(TokenList tokens) {
+    tokens.stripWhiteSpace();
     this.tokens = tokens;
     this.AST = parse2Expression(tokens);
   }
   Expression parse2Expression(TokenList tokens) {
     TokenAndPosition leastPrec = tokens.getLeastPrec();
-    System.out.println("<Acorn.Stove.Parser.parse2Expression>");
-    System.out.println(leastPrec);
-    System.out.println("</Acorn.Stove.Parser.parse2Expression>");
+    // System.out.println("<Acorn.Stove.Parser.parse2Expression>");
+    // System.out.println(leastPrec);
+    // System.out.println("</Acorn.Stove.Parser.parse2Expression>");
     if (leastPrec.token.type == TokenTypes.num) {
       return new Literal(leastPrec.token.value);
     }
     if (leastPrec.token.type == TokenTypes.parenL) {
       return parenLeft(tokens.slice(leastPrec.index + 1));
     }
+    BinopCollection collection = tokens.binopSplit(leastPrec.index);
     if (leastPrec.token.type.binop) {
-      BinopCollection collection = tokens.binopSplit(leastPrec.index);
       return parseBinop(collection.left, collection.binop, collection.right);
+    }
+    if (leastPrec.token.type == TokenTypes.underscore) {
+      return parseMixedNumber(collection.left, collection.binop, collection.right);
     }
     return new Literal("Parser cant deal with it yet");
   }
   Expression parenLeft(TokenList tokens) {
-    System.out.println("<Acorn.Stove.Parser.parenLeft>");
-    System.out.print(tokens);
-    System.out.println("</Acorn.Stove.Parser.parenLeft>");
+    // System.out.println("<Acorn.Stove.Parser.parenLeft>");
+    // System.out.print(tokens);
+    // System.out.println("</Acorn.Stove.Parser.parenLeft>");
     int l = tokens.size();
     int scopeLevel = 0;
     int endParen = -1;
@@ -61,6 +65,10 @@ public class Parser {
     return parse2Expression(tokens.slice(0, endParen));
   }
   BinopExpression parseUnary(Token op, TokenList right) {
+    // System.out.println("<Acorn.Stove.Parser.parseUnary>");
+    // System.out.println("op:\n" + op);
+    // System.out.print("right:\n" + right);
+    // System.out.println("</Acorn.Stove.Parser.parseUnary>");
     return new BinopExpression(
       new Literal("0"),
       op.value,
@@ -68,6 +76,20 @@ public class Parser {
     );
   }
   BinopExpression parseBinop(TokenList left, Token center, TokenList right) {
+    // System.out.println("<Acorn.Stove.Parser.parseBinop>");
+    // System.out.print("left:\n" + left);
+    // System.out.println("center:\n" + center);
+    // System.out.print("right:\n" + right);
+    // System.out.println("</Acorn.Stove.Parser.parseBinop>");
+    if (
+      (
+        left.size() == 1
+        && left.get(0).type == TokenTypes.sof
+      )
+      || left.size() == 0
+    ) {
+      return parseUnary(center, right);
+    }
     return new BinopExpression(
       parse2Expression(left),
       center.value,
@@ -75,6 +97,11 @@ public class Parser {
     );
   }
   BinopExpression parseMixedNumber(TokenList left, Token center, TokenList right) {
+    // System.out.println("<Acorn.Stove.Parser.parseMixedNumber>");
+    // System.out.print("left:\n" + left);
+    // System.out.println("center:\n" + center);
+    // System.out.print("right:\n" + right);
+    // System.out.println("</Acorn.Stove.Parser.parseMixedNumber>");
     BinopExpression exRight = (BinopExpression) parse2Expression(right);
     if (!exRight.binop.equals("/")) {
       throw new UnexpectedToken(exRight.binop, "/");
@@ -87,36 +114,9 @@ public class Parser {
   }
   @Override
   public String toString() {
-    System.out.println("<Acorn.Stove.Parser.toString>");
-    System.out.print(this.tokens);
-    System.out.println("</Acorn.Stove.Parser.toString>");
+    // System.out.println("<Acorn.Stove.Parser.toString>");
+    // System.out.print(this.tokens);
+    // System.out.println("</Acorn.Stove.Parser.toString>");
     return this.AST.toString();
   }
 }
-
-/*
-int l = this.size();
-for (int i = 0; i < l; i++) {
-  new FFSJava("Why do I have to keep using loops everywhere");
-}
-*/
-// 2 + 3 * 2_1/3
-/*
-BinopExpression {
-  binop: +
-  left: 2
-  right: BinopExpression {
-    binop: *
-    left: 3
-    right: BinopExpression {
-      binop: +
-      left: 2
-      right: BinopExpression {
-        binop: /
-        left: 1
-        right: 3
-      }
-    }
-  } 
-}
-*/

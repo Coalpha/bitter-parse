@@ -1,8 +1,11 @@
 package Acorn.Pestle;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.function.Predicate;
+
 public class TokenList extends ArrayList<Token> {
   static final long serialVersionUID = 0xbe4dead;
+  Predicate<Token> isWhiteSpace = (Token t) -> t.type == TokenTypes.space;
   public TokenAndPosition getLeastPrec() {
     Token t = new Token(
       "leastPrecStartingToken",
@@ -44,6 +47,9 @@ public class TokenList extends ArrayList<Token> {
       this.get(binopIndex),
       this.slice(binopIndex + 1)
     );
+  }
+  public void stripWhiteSpace() {
+    this.removeIf(this.isWhiteSpace);
   }
   @Override
   public String toString() {

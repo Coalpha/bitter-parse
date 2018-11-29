@@ -25,7 +25,7 @@ public class Token {
       "%sToken %s{ %svalue%s: %s, %stype%s: %s }", 
       //1           2   3     4   5   6     7   8
 
-      Colors.yellow,     // 1
+      Colors.yellow,   // 1
       Colors.reset,    // 2
       Colors.red,      // 3
       Colors.reset,    // 4

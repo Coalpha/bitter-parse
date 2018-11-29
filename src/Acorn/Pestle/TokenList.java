@@ -34,7 +34,7 @@ public class TokenList extends ArrayList<Token> {
     return this.slice(start, this.size());
   }
   public TokenList slice(int start, int end) {
-    TokenList a = (TokenList) new ArrayList<Token>(end - start);
+    TokenList a = new TokenList();
     a.addAll(this.subList(start, end));
     return a;
   }

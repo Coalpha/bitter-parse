@@ -3,7 +3,7 @@ import VT100.Colors;
 
 public class TokenType {
   final String name;
-  boolean binop = false;
+  public boolean binop = false;
   public final int prec;
   TokenType(String name, int prec, boolean binop) {
     this.name = name;

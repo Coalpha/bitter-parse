@@ -1,4 +1,5 @@
 package Acorn.Stove;
+
 import Acorn.Pestle.*;
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -9,12 +10,15 @@ public class Parser {
   public Expression AST;
   public Parser(TokenList tokens) {
     this.tokens = tokens;
+    this.AST = parse2Expression(tokens);
   }
-  /*
   Expression parse2Expression(TokenList tokens) {
-
+    TokenAndPosition leastPrec = tokens.getLeastPrec();
+    if (leastPrec.token.type == TokenTypes.num) {
+      return new Literal(leastPrec.token.value);
+    }
+    return new Literal("0");
   }
-  */
   BinopExpression parseUnary(Token op, TokenList right) {
     return new BinopExpression(
       new Literal("0"),
@@ -29,21 +33,21 @@ public class Parser {
       parse2Expression(right)
     );
   }
-  /* TODO
-  BinopExpression parse_(TokenList left, Token center, TokenList right) {
-    // Expression exLeft = parse2Expression(left);
-    // int l = this.size();
-    // TokenAndPosition binop = right.nextBinop();
-    // if (binop.token.type != TokenTypes.slash) {
-    //   throw new UnexpectedToken(binop.value, "/");
-    // }
-    // return new BinopExpression(exLeft, "+", parseBinop(left, binop, right));
+  BinopExpression parseMixedNumber(TokenList left, Token center, TokenList right) {
+    BinopExpression exRight = (BinopExpression) parse2Expression(right);
+    if (!exRight.binop.equals("/")) {
+      throw new UnexpectedToken(exRight.binop, "/");
+    }
+    return new BinopExpression(
+      parse2Expression(left),
+      "+",
+      exRight
+    );
   }
-  */
   @Override
   public String toString() {
-    return "foobar";
-    // return this.AST.toString();
+    System.out.println(this.tokens.toString());
+    return this.AST.toString();
   }
 }
 

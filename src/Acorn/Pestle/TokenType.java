@@ -1,4 +1,5 @@
 package Acorn.Pestle;
+import VT100.Colors;
 
 public class TokenType {
   final String name;
@@ -19,6 +20,26 @@ public class TokenType {
   }
   @Override
   public String toString() {
-    return this.name + "@" + this.prec;
+    return String.format(
+      "%sTokenType %s{ %sname%s: %s, %sprec%s: %s }", 
+      //1           2   3     4   5   6     7   8
+
+      Colors.yellow,     // 1
+      Colors.reset,    // 2
+      Colors.red,      // 3
+      Colors.reset,    // 4
+      (
+        Colors.green
+        + this.name
+        + Colors.reset
+      ),               // 5
+      Colors.red,      // 6
+      Colors.reset,    // 7
+      (
+        Colors.green
+        + this.prec
+        + Colors.reset
+      )                // 8
+    );
   }
 }

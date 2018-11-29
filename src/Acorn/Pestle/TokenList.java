@@ -3,14 +3,11 @@ import java.util.List;
 import java.util.ArrayList;
 public class TokenList extends ArrayList<Token> {
   static final long serialVersionUID = 0xbe4dead;
-  public static TokenList fromList(List<Token> l) {
-
-    TokenList a = (TokenList) new ArrayList<Token>(l.size());
-    a.addAll(l);
-    return a;
-  }
-  public TokenAndPosition getLeastPrecIndex() {
-    Token t = Token.NA;
+  public TokenAndPosition getLeastPrec() {
+    Token t = new Token(
+      "leastPrecStartingToken",
+      new TokenType("lpst", 99)
+    );
     int idx = 0;
     int l = this.size();
     for (int i = 0; i < l; i++) {
@@ -33,11 +30,19 @@ public class TokenList extends ArrayList<Token> {
     }
     return new TokenAndPosition(Token.NA, 0);
   }
-  public BinaryCollection binopSplit(int binopIndex) {
-    return new BinaryCollection(
-      TokenList.fromList(this.subList(0, binopIndex)),
+  public TokenList slice(int start) {
+    return this.slice(start, this.size());
+  }
+  public TokenList slice(int start, int end) {
+    TokenList a = (TokenList) new ArrayList<Token>(end - start);
+    a.addAll(this.subList(start, end));
+    return a;
+  }
+  public BinopCollection binopSplit(int binopIndex) {
+    return new BinopCollection(
+      this.slice(0, binopIndex),
       this.get(binopIndex),
-      TokenList.fromList(this.subList(binopIndex + 1, this.size()))  
+      this.slice(binopIndex + 1)
     );
   }
   @Override

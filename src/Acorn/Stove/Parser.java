@@ -10,7 +10,7 @@ public class Parser {
   int length;
   final TokenList tokens;
   public Expression AST;
-  boolean verbose = true;
+  boolean verbose = false;
   public Parser(TokenList tokens) {
     tokens.shiftSOF();
     tokens.verifyParens();

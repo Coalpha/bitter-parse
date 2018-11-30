@@ -128,9 +128,9 @@ public class Parser {
       Token current = tokens.get(i);
       if (current.type == TokenTypes.parenL) {
         if (this.verbose) {
-          if (times++ > 10) {
-            throw new WTFerror("WTF");
-          }
+          // if (times++ > 10) {
+          //   throw new WTFerror("WTF");
+          // }
           System.out.println("parenL at: " + i);
           i = tokens.findMatchingParen(i);
           System.out.println("found matching paren at: " + i);
@@ -156,17 +156,6 @@ public class Parser {
           continue;
         }
       }
-      if (current.type == TokenTypes.underscore) {
-        TokenAndPosition nextSlash = tokens.find(Parser::nextSlash);
-        if (this.verbose) {
-          System.out.println("underscore");
-          System.out.println("the next slash is");
-          System.out.println(nextSlash);
-        }
-        if (nextSlash.index == -1) {
-          throw new WTFerror("Expected \"/\" but found nothing!");
-        }
-      }
       if (
         currentPrec > 0
         && currentPrec < leastPrec.token.prec()
@@ -176,6 +165,18 @@ public class Parser {
           System.out.println(current);
         }
         leastPrec = new TokenAndPosition(current, i);
+      }
+      if (current.type == TokenTypes.underscore) {
+        TokenAndPosition nextSlash = tokens.findFromIndex(i, Parser::nextSlash);
+        if (this.verbose) {
+          System.out.println("underscore");
+          System.out.println("the next slash is");
+          System.out.println(nextSlash);
+        }
+        if (nextSlash.index == -1) {
+          throw new WTFerror("Expected \"/\" but found nothing!");
+        }
+        i = nextSlash.index;
       }
     }
     if (this.verbose) {

@@ -46,9 +46,9 @@ public class TokenList extends ArrayList<Token> {
     }
     return matchingParenIndex;
   }
-  public TokenAndPosition find(Predicate<Token> test) {
+  public TokenAndPosition findFromIndex(int start, Predicate<Token> test) {
     int l = this.size();
-    for (int i = 0; i < l; i++) {
+    for (int i = start; i < l; i++) {
       Token current = this.get(i);
       if (test.test(current)) {
         return new TokenAndPosition(current, i);
@@ -86,8 +86,10 @@ public class TokenList extends ArrayList<Token> {
   @Override
   public String toString() {
     String res = "";
-    for (Token token : this) {
-      res += token + ",\n";
+    int s = this.size();
+    for (int i = 0; i < s; i++) {
+      Token current = this.get(i);
+      res += i + ": " + current + ",\n";
     }
     return res;
   }

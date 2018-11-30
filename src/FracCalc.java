@@ -1,3 +1,5 @@
+// package com.gradescope.fraccalc;
+
 import Acorn.Tree;
 import java.util.function.Function;
 
@@ -7,8 +9,5 @@ public class FracCalc {
   }
   public static String produceAnswer(String input) {
     return Tree.grow(input);
-  }
-  public static void tests() {
-    
   }
 }

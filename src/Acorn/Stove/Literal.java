@@ -13,6 +13,6 @@ public class Literal extends Expression {
   }
   @Override
   public String toString() {
-    return Colors.orange + this.val + Colors.reset;
+    return Colors.cyan + this.val + Colors.reset;
   }
 }

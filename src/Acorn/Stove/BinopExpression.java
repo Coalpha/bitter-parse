@@ -18,10 +18,10 @@ public class BinopExpression extends Expression {
   @Override
   public String toString() {
     return (
-      Colors.purple + "(" + Colors.reset
-      + this.left.toString() + " " + Colors.yellow
+      Colors.blue + "(" + Colors.reset
+      + this.left.toString() + " " + Colors.red
       + this.binop + Colors.reset + " " + this.right.toString()
-      + Colors.purple + ")" + Colors.reset
+      + Colors.blue + ")" + Colors.reset
     );
   }
 }

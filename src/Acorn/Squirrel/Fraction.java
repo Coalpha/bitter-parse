@@ -47,12 +47,22 @@ public class Fraction {
     if (this.denominator == 1) {
       return Integer.toString(this.numerator);
     }
-    if (this.numerator > this.denominator) {
+    if (Math.abs(this.numerator) > this.denominator) {
       String res = Integer.toString(
         (int) Math.floor(this.numerator / this.denominator)
       );
-      String fraction = new Fraction(this.numerator % this.denominator, this.denominator)
-        .toString();
+      String fraction;
+      if (this.numerator < 0 && Math.abs(this.numerator) > this.denominator) {
+        fraction = new Fraction (
+          this.numerator % this.denominator,
+          this.denominator * -1
+        ).toString();
+      } else {
+        fraction = new Fraction(
+          this.numerator % this.denominator, 
+          this.denominator
+        ).toString();
+      }
       if (!(fraction.equals(""))) {
         res += "_" + fraction;
       }

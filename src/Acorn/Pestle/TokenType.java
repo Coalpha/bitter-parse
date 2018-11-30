@@ -5,7 +5,7 @@ public class TokenType {
   final String name;
   public boolean binop = false;
   public final int prec;
-  TokenType(String name, int prec, boolean binop) {
+  public TokenType(String name, int prec, boolean binop) {
     this.name = name;
     this.prec = prec;
     this.binop = true;
@@ -14,7 +14,7 @@ public class TokenType {
     this.name = name;
     this.prec = prec;
   }
-  TokenType(String name) {
+  public TokenType(String name) {
     this.name = name;
     this.prec = 0;
   }

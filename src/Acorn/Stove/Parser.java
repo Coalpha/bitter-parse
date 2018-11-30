@@ -10,7 +10,7 @@ public class Parser {
   int length;
   final TokenList tokens;
   public Expression AST;
-  boolean verbose = false;
+  boolean verbose = true;
   public Parser(TokenList tokens) {
     tokens.shiftSOF();
     tokens.verifyParens();
@@ -107,6 +107,7 @@ public class Parser {
   public TokenAndPosition getLeastPrec(TokenList tokens) {
     if (this.verbose) {
       System.out.println("<Acorn.Stove.Parser.getLeastPrec>");
+      System.out.print(tokens);
     }
     TokenAndPosition leastPrec = new TokenAndPosition(
       new Token(
@@ -115,6 +116,7 @@ public class Parser {
       ),
       0
     );
+    int times = 0;
     int l = tokens.size();
     for (int i = 0; i < l; i++) {
       Token previous;
@@ -126,7 +128,10 @@ public class Parser {
       Token current = tokens.get(i);
       if (current.type == TokenTypes.parenL) {
         if (this.verbose) {
-          System.out.println("parenL");
+          if (times++ > 10) {
+            throw new WTFerror("WTF");
+          }
+          System.out.println("parenL at: " + i);
           i = tokens.findMatchingParen(i);
           System.out.println("found matching paren at: " + i);
         }

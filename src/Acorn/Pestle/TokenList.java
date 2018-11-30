@@ -30,7 +30,7 @@ public class TokenList extends ArrayList<Token> {
     int l = this.size();
     int parenScope = 0;
     int matchingParenIndex = -1;
-    for (int i = 0; i < l; i++) {
+    for (int i = indexOfCurrentParen; i < l; i++) {
       Token currentToken = this.get(i);
       if (currentToken.type == TokenTypes.parenL) {
         parenScope++;
@@ -38,9 +38,6 @@ public class TokenList extends ArrayList<Token> {
       }
       if (currentToken.type == TokenTypes.parenR) {
         parenScope--;
-      }
-      if (parenScope > 0) {
-        continue;
       }
       if (parenScope == 0) {
         matchingParenIndex = i;

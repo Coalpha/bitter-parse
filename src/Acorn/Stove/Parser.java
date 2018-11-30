@@ -10,7 +10,7 @@ public class Parser {
   int length;
   final TokenList tokens;
   public Expression AST;
-  boolean verbose = true;
+  boolean verbose = false;
   public Parser(TokenList tokens) {
     tokens.shiftSOF();
     tokens.verifyParens();
@@ -34,6 +34,9 @@ public class Parser {
     }
     if (leastPrec.token.type == TokenTypes.num) {
       return new Literal(leastPrec.token.value);
+    }
+    if (leastPrec.token.type == TokenTypes.unary) {
+      return parseUnary(leastPrec.token, tokens.slice(leastPrec.index + 1));
     }
     BinopCollection collection = tokens.binopSplit(leastPrec.index);
     if (leastPrec.token.type.binop) {
@@ -116,7 +119,7 @@ public class Parser {
     for (int i = 0; i < l; i++) {
       Token previous;
       if (i == 0) {
-        previous = leastPrec.token;
+        previous = new Token("", TokenTypes.sof);
       } else {
         previous = tokens.get(i - 1);
       }
@@ -130,11 +133,23 @@ public class Parser {
         continue;
       }
       int currentPrec = current.prec();
-      if (current.type == TokenTypes.plusMin && previous.type.binop) {
+      if (current.type == TokenTypes.plusMin) {
         if (this.verbose) {
           System.out.println("+- or something");
         }
-        continue;
+        if (previous.type.binop) {
+          if (this.verbose) {
+            System.out.println("Skipping");
+          }
+          continue;
+        }
+        if (previous.type == TokenTypes.sof) {
+          leastPrec = new TokenAndPosition(
+            new Token(current.value, TokenTypes.unary),
+            i
+          );
+          continue;
+        }
       }
       if (current.type == TokenTypes.underscore) {
         TokenAndPosition nextSlash = tokens.find(Parser::nextSlash);
@@ -151,6 +166,10 @@ public class Parser {
         currentPrec > 0
         && currentPrec < leastPrec.token.prec()
       ) {
+        if (this.verbose) {
+          System.out.println("reached final with current token:");
+          System.out.println(current);
+        }
         leastPrec = new TokenAndPosition(current, i);
       }
     }

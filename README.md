@@ -7,6 +7,9 @@
 - Class: "Do it without using Nashorn"
 - Me: *poorly re-writes a JavaScript parser in Java*
 
+This fractional calculator can handle order of operations for the operators
+`+`, `-`, `*`, `/`, and `_`. It also understands parens.
+
 ### Usage (wtf_ja)
 
 - Requires [`wtf_ja`](https://github.com/Coalpha/dotfiles/blob/master/bin/wtf_ja) and it's dependencies

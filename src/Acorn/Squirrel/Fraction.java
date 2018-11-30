@@ -52,7 +52,7 @@ public class Fraction {
         (int) Math.floor(this.numerator / this.denominator)
       );
       String fraction;
-      if (this.numerator < 0 && Math.abs(this.numerator) > this.denominator) {
+      if (this.numerator < 0) {
         fraction = new Fraction (
           this.numerator % this.denominator,
           this.denominator * -1
@@ -72,7 +72,7 @@ public class Fraction {
   }
   @Override
   public String toString() {
-    if ((this.numerator & this.denominator) == 0) {
+    if (this.numerator == 0) {
       return "";
     }
     return Integer.toString(this.numerator) + "/" + Integer.toString(this.denominator);

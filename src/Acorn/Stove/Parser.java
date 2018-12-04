@@ -1,6 +1,6 @@
 package Acorn.Stove;
 
-import Acorn.WTFerror;
+import Acorn.AcornError;
 import Acorn.Pestle.*;
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -10,7 +10,7 @@ public class Parser {
   int length;
   final TokenList tokens;
   public Expression AST;
-  boolean verbose = false;
+  boolean verbose = true;
   public Parser(TokenList tokens) {
     tokens.shiftSOF();
     tokens.verifyParens();
@@ -24,7 +24,7 @@ public class Parser {
       System.out.println(tokens);
     }
     if (tokens.size() == 0) {
-      throw new WTFerror("Cannot parse TokenList of size 0!");
+      throw new AcornError("Cannot parse TokenList of size 0!");
     }
     TokenAndPosition leastPrec = getLeastPrec(tokens);
     if (this.verbose) {
@@ -49,7 +49,7 @@ public class Parser {
       int matchingParen = tokens.findMatchingParen(0);
       return parse2Expression(tokens.slice(1, matchingParen));
     }
-    return new Literal("Parser cant deal with it yet");
+    return new Literal("Oh no");
   }
   BinopExpression parseUnary(Token op, TokenList right) {
     if (this.verbose) {
@@ -174,7 +174,7 @@ public class Parser {
           System.out.println(nextSlash);
         }
         if (nextSlash.index == -1) {
-          throw new WTFerror("Expected \"/\" but found nothing!");
+          throw new AcornError("Expected \"/\" but found nothing!");
         }
         i = nextSlash.index;
       }

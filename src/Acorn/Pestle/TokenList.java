@@ -1,6 +1,6 @@
 package Acorn.Pestle;
 
-import Acorn.WTFerror;
+import Acorn.AcornError;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -20,10 +20,10 @@ public class TokenList extends ArrayList<Token> {
       }
     }
     if (lParenCount > rParenCount) {
-      throw new WTFerror("Too many left parens!");
+      throw new AcornError("Too many left parens!");
     }
     if (rParenCount > lParenCount) {
-      throw new WTFerror("Too many right parens!");
+      throw new AcornError("Too many right parens!");
     }
   }
   public int findMatchingParen(int indexOfCurrentParen) {

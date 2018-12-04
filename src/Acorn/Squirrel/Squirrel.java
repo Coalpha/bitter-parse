@@ -1,6 +1,6 @@
 package Acorn.Squirrel;
 import Acorn.Stove.*;
-import Acorn.WTFerror;
+import Acorn.AcornError;
 
 public class Squirrel {
   public static Fraction feed(Expression expr) {
@@ -12,7 +12,7 @@ public class Squirrel {
     } else if (type.equals("ParenExpression")) {
       return Squirrel.feed((ParenExpression) expr);
     }
-    throw new WTFerror();
+    throw new AcornError();
   }
   public static Fraction feed(ParenExpression p) {
     // System.out.println(p);
@@ -35,6 +35,6 @@ public class Squirrel {
     } else if (expr.binop.equals("-")) {
       return left.add(right.multiply(-1));
     }
-    throw new WTFerror();
+    throw new AcornError();
   }
 }

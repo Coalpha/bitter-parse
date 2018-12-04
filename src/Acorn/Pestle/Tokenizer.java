@@ -15,14 +15,16 @@ public class Tokenizer {
     // fetching length is expensive, cache it.
     append('s', TokenTypes.sof);
     for (int i = 0; i < l; i++) {
+      // this for loop iterates through every character within the provided string
       char c = inp.charAt(i);
+      // get the current character
       if (isNumber(c)) {
-        if (getLastToken().type == TokenTypes.space) {
-          append(c, TokenTypes.num);
-        } else {
-          condTypeAppend(c, TokenTypes.num);
-        }
+        // the character is a Number character. Confusing right?
+        // basically the data is a character but the character is like '2' or something
+        condTypeAppend(c, TokenTypes.num);
+        // check if the last token was also a Number
       } else if (c == '+' || c == '-') {
+        // if it's plus or minus
         append(c, TokenTypes.plusMin);
       } else if (c == '*') {
         append(c, TokenTypes.star);
@@ -35,12 +37,20 @@ public class Tokenizer {
       } else if (c == '_') {
         append(c, TokenTypes.underscore);
       } else if (c == ' ') {
+        // why have space be a thing?
+        // I don't want `12 34` to parse to [1234]
         append(c, TokenTypes.space);
       } else {
+        // otherwise the character is a ???!
+        // so just throw an error.
         throw new UnexpectedCharacter(c);
       }
+      // this is what you get when you can only switch enums
+      // for loop continues
     }
     append('e', TokenTypes.eof);
+    // append the end of file token
+    // useful when dealing with parens 
   }
   Token getLastToken() {
     return this.tokens.get(this.tokens.size() - 1);

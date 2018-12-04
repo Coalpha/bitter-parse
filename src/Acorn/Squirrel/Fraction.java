@@ -1,4 +1,5 @@
 package Acorn.Squirrel;
+
 public class Fraction {
   public static long gcm(int a, int b) {
     // https://stackoverflow.com/questions/6618994/simplifying-fractions-in-java

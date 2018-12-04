@@ -8,11 +8,18 @@ import java.util.function.Predicate;
 
 public class TokenList extends ArrayList<Token> {
   static final long serialVersionUID = 0xbe4dead;
+  // I have to declare this otherwise the compiler complains
   Predicate<Token> isWhiteSpace = (Token t) -> t.type == TokenTypes.space;
   public void verifyParens() {
+    // verifyParens is only called in Acorn.Stove.Parser
+    // it's only called once per parse.
+    // this function keeps track of the left parens and right parens
+    // if they aren't the same the user has emitted a bad
     int lParenCount = 0;
     int rParenCount = 0;
     for (Token currentToken : this) {
+      // iterator for loop syntax
+      // ArrayList<T> implements Iterable :)
       if (currentToken.type == TokenTypes.parenL) {
         lParenCount++;
       } else if (currentToken.type == TokenTypes.parenR) {
@@ -28,26 +35,40 @@ public class TokenList extends ArrayList<Token> {
   }
   public int findMatchingParen(int indexOfCurrentParen) {
     int l = this.size();
+    // cache size
     int parenScope = 0;
+    // parenScope keeps track of how many parens deep the for loop is
     int matchingParenIndex = -1;
+    // it starts at -1
+    // why don't I start it at 0?
+    // what if the matching paren is at 0?
+    // (it shouldn't be, that's not how parens work but whatever. Saftey)
     for (int i = indexOfCurrentParen; i < l; i++) {
+      // don't start i from 0
+      // that caused bugs
       Token currentToken = this.get(i);
       if (currentToken.type == TokenTypes.parenL) {
         parenScope++;
+        // going one paren deeper
         continue;
+        // continue so the for loop doesn't waste time checking the other types
       }
       if (currentToken.type == TokenTypes.parenR) {
         parenScope--;
+        // don't continue!
+        // fall through to next if statement
       }
       if (parenScope == 0) {
         matchingParenIndex = i;
         break;
+        // stop looping, we've found the index
       }
     }
     return matchingParenIndex;
   }
   public TokenAndPosition findFromIndex(int start, Predicate<Token> test) {
     int l = this.size();
+    // cache
     for (int i = start; i < l; i++) {
       Token current = this.get(i);
       if (test.test(current)) {

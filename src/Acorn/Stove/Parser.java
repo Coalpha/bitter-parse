@@ -116,7 +116,6 @@ public class Parser {
       ),
       0
     );
-    int times = 0;
     int l = tokens.size();
     for (int i = 0; i < l; i++) {
       Token previous;
@@ -128,9 +127,6 @@ public class Parser {
       Token current = tokens.get(i);
       if (current.type == TokenTypes.parenL) {
         if (this.verbose) {
-          // if (times++ > 10) {
-          //   throw new WTFerror("WTF");
-          // }
           System.out.println("parenL at: " + i);
           i = tokens.findMatchingParen(i);
           System.out.println("found matching paren at: " + i);
@@ -186,9 +182,11 @@ public class Parser {
   }
   @Override
   public String toString() {
-    // System.out.println("<Acorn.Stove.Parser.toString>");
-    // System.out.print(this.tokens);
-    // System.out.println("</Acorn.Stove.Parser.toString>");
+    if (this.verbose) {
+      System.out.println("<Acorn.Stove.Parser.toString>");
+      System.out.print(this.tokens);
+      System.out.println("</Acorn.Stove.Parser.toString>");
+    }
     return this.AST.toString();
   }
 }

@@ -17,3 +17,26 @@ This fractional calculator can handle order of operations for the operators
 - Run FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java -r -c:yes`
 - Compile FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java --native:bin/FracCalc -c:yes`
 - Compile and then run FracCalc: `wtf_ja -c:yes -i:src/FracCalc.java -n -r -c:yes`
+
+# README
+If you want to read the code, follow this path:
+
+1. FracCalc
+1. VT100.Colors
+1. Acorn.README
+1. Acorn.Tree
+1. Acorn.Pestle.Token
+1. Acorn.Pestle.TokenTypes
+1. Acorn.Pestle.TokenType
+1. Acorn.Pestle.Tokenizer
+1. Acorn.Pestle.TokenList
+1. Acorn.Pestle.TokenAndPosition
+1. Acorn.Pestle.BinopCollection
+1. Acorn.Tree
+1. Acorn.Stove.Node
+1. Acorn.Stove.Expression
+1. Acorn.Stove.Literal
+1. Acorn.Stove.ParenExpression
+1. Acorn.Stove.BinopExpression
+1. Acorn.Parser and Acorn.Pestle.TokenList
+1. Acorn.Tree

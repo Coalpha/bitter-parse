@@ -19,6 +19,7 @@ class Console {
         System.exit(0);
       }
       String res = callback.apply(inp);
+      // the result of the callback
       System.out.println(res + "\n");
       // print the result of the callback with another newline
     }

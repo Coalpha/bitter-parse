@@ -23,5 +23,7 @@ public class BinopExpression extends Expression {
       + this.binop + Colors.reset + " " + this.right.toString()
       + Colors.blue + ")" + Colors.reset
     );
+    // looks like this:
+    // ( 3 + 2 )
   }
 }

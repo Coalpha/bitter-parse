@@ -118,25 +118,17 @@ public class Parser {
       }
       int currentPrec = current.prec();
       // prec() is shorthand for current.type.prec
-      if (current.type == TokenTypes.plusMin) {
+      if (current.type == TokenTypes.plusMin && previous.type.binop) {
+        // if the token list looks like:
+        // 1 +- 1 / 2
+        //    ^ current token
         if (this.verbose) {
-          System.out.println("+- or something");
+          System.out.println("Skipping");
         }
-        if (previous.type.binop) {
-          // if the token list looks like:
-          // 1 +- 1 / 2
-          //    ^ current token
-          if (this.verbose) {
-            System.out.println("Skipping");
-          }
-          // don't consider the current token as a least precedence candidate
-          continue;
-        }
+        // don't consider the current token as a least precedence candidate
+        continue;
       }
-      if (
-        currentPrec > 0 // if the TokenType has 0 precedence it's not a candidate
-        && currentPrec < leastPrec.token.prec()
-      ) {
+      if (currentPrec > 0 && currentPrec < leastPrec.token.prec()) {
         // the current token's precedence is greater than 0
         // and less than the previously lowest precedence token
         if (this.verbose) {
@@ -185,13 +177,7 @@ public class Parser {
       System.out.print("right:\n" + right);
       System.out.println("</Acorn.Stove.Parser.parseBinop>");
     }
-    if (
-      (
-        left.size() == 1
-        && left.get(0).type == TokenTypes.sof
-      )
-      || left.size() == 0
-    ) {
+    if (left.size() == 0) {
       return parseUnary(center, right);
     }
     return new BinopExpression(

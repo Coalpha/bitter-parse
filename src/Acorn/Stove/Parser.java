@@ -12,7 +12,7 @@ public class Parser {
   int length;
   final TokenList tokens;
   public Expression AST;
-  boolean verbose = true;
+  boolean verbose = false;
   // I like to keep static things at the top of the class
   static boolean isSlash(Token token) {
     // this function makes no sense without context

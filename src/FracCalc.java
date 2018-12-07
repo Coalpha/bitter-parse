@@ -1,5 +1,4 @@
 // package com.gradescope.fraccalc;
-
 import Acorn.Tree;
 import java.util.function.Function;
 

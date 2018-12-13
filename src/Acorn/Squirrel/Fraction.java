@@ -46,28 +46,20 @@ public class Fraction {
   }
   public String toMixedNumber() {
     if (this.denominator == 1) {
+      // if it's a fraction like 5/1, just return 5
       return Integer.toString(this.numerator);
     }
     if (Math.abs(this.numerator) > this.denominator) {
-      String res = Integer.toString(
-        (int) Math.floor(this.numerator / this.denominator)
-      );
-      String fraction;
-      if (this.numerator < 0) {
-        fraction = new Fraction (
-          this.numerator % this.denominator,
-          this.denominator * -1
-        ).toString();
-      } else {
-        fraction = new Fraction(
-          this.numerator % this.denominator, 
-          this.denominator
-        ).toString();
+      // for stuff like -10 / 2
+      String whole = Integer.toString((int) Math.floor(this.numerator / this.denominator));
+      String frac = new Fraction(
+        Math.abs(this.numerator % this.denominator),
+        this.denominator
+      ).toString();
+      if (!(frac.equals(""))) {
+        whole += "_" + frac;
       }
-      if (!(fraction.equals(""))) {
-        res += "_" + fraction;
-      }
-      return res;
+      return whole;
     }
     return this.toString();
   }

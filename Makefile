@@ -1,7 +1,7 @@
 build:
-	javac FracCalc.java
+	javac FracCalc.java -d bin
 
 run: build
-	java FracCalc
+	java -cp bin FracCalc
 
 .PHONY: build run

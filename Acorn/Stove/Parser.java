@@ -2,9 +2,6 @@ package Acorn.Stove;
 
 import Acorn.AcornError;
 import Acorn.Pestle.*;
-import java.util.ArrayList;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 // this is the only file in Acorn.Stove that actually needs explaining
 // and boy, it needs a lot of explaining

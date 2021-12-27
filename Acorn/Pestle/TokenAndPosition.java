@@ -16,7 +16,7 @@ public class TokenAndPosition {
   @Override
   public String toString() {
     return String.format(
-      "%sTokenAndPosition %s{ %stoken%s: %s, %sindex%s: %s }", 
+      "%sTokenAndPosition %s{ %stoken%s: %s, %sindex%s: %s }",
       //1           2   3     4   5   6     7   8
 
       Colors.yellow,   // 1

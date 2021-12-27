@@ -16,7 +16,7 @@ public class Fraction {
     }
     if (de < 0) {
       this.numerator = nu * -1;
-      this.denominator = de * -1; 
+      this.denominator = de * -1;
     } else {
       this.numerator = nu;
       this.denominator = de;

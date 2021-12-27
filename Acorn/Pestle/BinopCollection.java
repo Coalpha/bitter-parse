@@ -9,9 +9,9 @@ public class BinopCollection {
   public TokenList right;
   // here's why this class is used. Take this expression for instance:
   // [1 * 2] + [3]
-  
+
   // can be converted into this V
-  
+
   // left = [1 * 2]
   // binop = +
   // right = [3]

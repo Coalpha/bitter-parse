@@ -21,7 +21,7 @@ public class TokenType {
   @Override
   public String toString() {
     return String.format(
-      "%sTokenType %s{ %sname%s: %s, %sprec%s: %s }", 
+      "%sTokenType %s{ %sname%s: %s, %sprec%s: %s }",
       //1           2   3     4   5   6     7   8
 
       Colors.yellow,     // 1

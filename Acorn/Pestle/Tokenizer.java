@@ -50,7 +50,7 @@ public class Tokenizer {
     }
     append('e', TokenTypes.eof);
     // append the end of file token
-    // useful when dealing with parens 
+    // useful when dealing with parens
   }
   Token getLastToken() {
     return this.tokens.get(this.tokens.size() - 1);

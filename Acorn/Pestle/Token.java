@@ -34,7 +34,7 @@ public class Token {
   @Override
   public String toString() {
     return String.format(
-      "%sToken %s{ %svalue%s: %s, %stype%s: %s }", 
+      "%sToken %s{ %svalue%s: %s, %stype%s: %s }",
       //1           2   3     4   5   6     7   8
 
       Colors.yellow,   // 1

@@ -4,12 +4,12 @@ public class TokenTypes {
   public static TokenType sof = new TokenType("sof");
   public static TokenType eof = new TokenType("eof");
   public static TokenType space = new TokenType("wsp");
-  
+
   public static TokenType parenL = new TokenType("prL");
   public static TokenType parenR = new TokenType("prR");
-  
+
   public static TokenType num = new TokenType("num", 7);
-  
+
   public static TokenType plusMin = new TokenType("+/-", 2, true);
   public static TokenType unary = new TokenType("+U-", 3);
   public static TokenType star = new TokenType("str", 4, true);
